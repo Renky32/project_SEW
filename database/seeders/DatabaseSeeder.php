@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Seed doctors with schedules
+        $this->call(DoctorSeeder::class);
     }
 }
