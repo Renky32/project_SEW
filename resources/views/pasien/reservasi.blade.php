@@ -3,7 +3,15 @@
 @section('content')
 
 <h2>Jadwal Praktik Dokter</h2>
+@if(session('success'))
 
+<div class="alert alert-success">
+
+    {{ session('success') }}
+
+</div>
+
+@endif
 <table class="table">
 
     <thead>
@@ -19,7 +27,7 @@
 
     <tbody>
 
-    @foreach($jadwal as $item)
+        @foreach($jadwal as $item)
 
         <tr>
 
@@ -39,18 +47,26 @@
 
             <td>
 
-                <button
-                    class="btn btn-primary">
+                <form
+                    action="/pasien/reservasi/{{ $item->id_jadwal_praktek }}"
+                    method="POST">
 
-                    Reservasi
+                    @csrf
 
-                </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        Reservasi
+
+                    </button>
+
+                </form>
 
             </td>
-
         </tr>
 
-    @endforeach
+        @endforeach
 
     </tbody>
 

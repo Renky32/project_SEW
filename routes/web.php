@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Pasien\ReservasiController;
+use App\Http\Controllers\Pasien\RiwayatController;
+use App\Http\Controllers\Pasien\DashboardController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -48,7 +50,10 @@ Route::post('/logout', [LoginController::class, 'logout'])
 
 Route::middleware(['auth', 'role:pasien'])->group(function () {
 
-    Route::view('/pasien/dashboard', 'pasien.dashboard');
+    Route::get(
+        '/pasien/dashboard',
+        [DashboardController::class, 'index']
+    );
 
     Route::view('/pasien/profil', 'pasien.profil');
 
@@ -57,6 +62,26 @@ Route::middleware(['auth', 'role:pasien'])->group(function () {
         '/pasien/reservasi',
         [ReservasiController::class, 'index']
     );
+    Route::post(
+        '/pasien/reservasi/{jadwal}',
+        [ReservasiController::class, 'store']
+    );
 
-    Route::view('/pasien/riwayat', 'pasien.riwayat');
+    Route::get(
+        '/pasien/riwayat',
+        [RiwayatController::class, 'index']
+    );
+    Route::get(
+        '/pasien/riwayat/{id}',
+        [RiwayatController::class, 'show']
+
+    );
+    Route::put(
+        '/pasien/reservasi/{id}/batal',
+        [RiwayatController::class, 'cancel']
+    );
+    Route::view(
+        '/pasien/profil',
+        'pasien.profil'
+    );
 });

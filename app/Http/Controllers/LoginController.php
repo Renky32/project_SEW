@@ -14,28 +14,35 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-        if (Auth::attempt($credentials)) {
+        $login = $request->username;
+
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL)
+            ? 'email'
+            : 'username';
+
+        if (
+            Auth::attempt([
+                $field => $login,
+                'password' => $request->password
+            ])
+        ) {
 
             $request->session()->regenerate();
 
-            $user = Auth::user();
-
-            return match($user->role) {
-                'staff' => redirect('/admin/dashboard'),
-                'dokter' => redirect('/dokter/dashboard'),
-                'pasien' => redirect('/pasien/dashboard'),
-                default => redirect('/login')
-            };
+            return redirect('/dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau Password salah'
-        ]);
+        return back()
+            ->withInput()
+            ->with(
+                'error',
+                'Username/Email atau password salah.'
+            );
     }
 
     public function logout(Request $request)
@@ -46,6 +53,10 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/login')
+            ->with(
+                'success',
+                'Anda berhasil logout'
+            );
     }
 }

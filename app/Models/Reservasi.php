@@ -21,4 +21,22 @@ class Reservasi extends Model
         'nomor_antrian',
         'status_reservasi'
     ];
+
+    public function jadwal()
+    {
+        return $this->belongsTo(
+            JadwalPraktek::class,
+            'jadwal_id',
+            'id_jadwal_praktek'
+        );
+    }
+
+    public function pasien()
+    {
+        return $this->belongsTo(
+            User::class,
+            'pasien_id',
+            'id_user'
+        );
+    }
 }

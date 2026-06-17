@@ -1,74 +1,146 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sistem Reservasi Dokter</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+
+            <span class="navbar-brand">
+                Sistem Reservasi Dokter
+            </span>
+
+            <div class="dropdown">
+
+                <a
+                    class="text-white text-decoration-none dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
+
+                    {{ auth()->user()->nama }}
+
+                    <form
+                        action="{{ route('logout') }}"
+                        method="POST"
+                        onsubmit="return confirm('Yakin ingin keluar dari aplikasi?')">
+
+                        @csrf
+
+                    </form>
+
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                    <li>
+
+                        <a
+                            class="dropdown-item"
+                            href="/pasien/profil">
+
+                            Profil
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <hr class="dropdown-divider">
+
+                    </li>
+
+                    <li>
+
+                        <form
+                            action="{{ route('logout') }}"
+                            method="POST">
+
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="dropdown-item text-danger">
+
+                                Logout
+
+                            </button>
+
+                        </form>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+
     <div class="container-fluid">
 
-        <span class="navbar-brand">
-            Sistem Reservasi Dokter
-        </span>
+        <div class="row">
 
-        <span class="text-white">
-            {{ auth()->user()->nama }}
-        </span>
+            <div class="col-md-2 bg-light min-vh-100">
 
-    </div>
-</nav>
+                <h5 class="mt-3">Menu Pasien</h5>
 
-<div class="container-fluid">
+                <ul class="nav flex-column">
 
-    <div class="row">
+                    <li class="nav-item">
+                        <a
+                            href="/pasien/dashboard"
+                            class="nav-link {{ request()->is('pasien/dashboard') ? 'active fw-bold text-primary' : '' }}">
+                            Dashboard
+                        </a>
+                    </li>
 
-        <div class="col-md-2 bg-light min-vh-100">
+                    <li class="nav-item">
+                        <a
+                            href="/pasien/reservasi"
+                            class="nav-link {{ request()->is('pasien/reservasi') ? 'active fw-bold text-primary' : '' }}">
+                            Reservasi
+                        </a>
+                    </li>
 
-            <h5 class="mt-3">Menu Pasien</h5>
+                    <li class="nav-item">
+                        <a
+                            href="/pasien/riwayat"
+                            class="nav-link {{ request()->is('pasien/riwayat*') ? 'active fw-bold text-primary' : '' }}">
+                            Riwayat Reservasi
+                        </a>
+                    </li>
 
-            <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a
+                            href="/pasien/profil"
+                            class="nav-link {{ request()->is('pasien/profil') ? 'active fw-bold text-primary' : '' }}">
+                            Profil
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="/pasien/dashboard" class="nav-link">
-                        Dashboard
-                    </a>
-                </li>
+                </ul>
 
-                <li class="nav-item">
-                    <a href="/pasien/reservasi" class="nav-link">
-                        Reservasi
-                    </a>
-                </li>
+            </div>
 
-                <li class="nav-item">
-                    <a href="/pasien/riwayat" class="nav-link">
-                        Riwayat Reservasi
-                    </a>
-                </li>
+            <div class="col-md-10 p-4">
 
-                <li class="nav-item">
-                    <a href="/pasien/profil" class="nav-link">
-                        Profil
-                    </a>
-                </li>
+                @yield('content')
 
-            </ul>
-
-        </div>
-
-        <div class="col-md-10 p-4">
-
-            @yield('content')
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 </body>
+
 </html>
